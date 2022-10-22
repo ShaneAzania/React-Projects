@@ -1,47 +1,41 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { Component } from "react";
+import { useState, useEffect } from "react";
 
 import CardList from "./components/cardList/cardList";
 import SearchInput from "./components/searchInput/searchInput";
 
-class Component_Name extends Component {
-	constructor() {
-		super();
+const App = () => {
+	const [monsters, setMonsters] = useState([]);
+	const [searchResults, setSearchResults] = useState(monsters);
+	const [searchString, setSearchString] = useState("");
 
-		this.state = {
-			monsters: [],
-			searchResults: [],
-		};
-	}
-	componentDidMount() {
+	console.log("render");
+
+	useEffect(() => {
 		fetch("https://jsonplaceholder.typicode.com/users")
 			.then((response) => response.json())
-			.then((users) =>
-				this.setState(() => {
-					return { monsters: users, searchResults: users }; //initialize search results with all objects from 'monsters'
-				})
-			);
-	}
+			.then((users) => {
+				setMonsters(users);
+			});
+		console.log("fetching monsters");
+	}, []);
+	useEffect(() => {
+		// set search results to filter monsters that contain searchString
+		let filteredMonstersList = monsters.filter((monster) => monster.name.toLowerCase().includes(searchString.toLowerCase()));
+		setSearchResults(filteredMonstersList);
+		console.log("filtering: " + searchString);
+	}, [searchString, monsters]);
 
-	onSearchChange = (event) => {
-		let search_string = event.target.value;
-		let new_monsters_list = this.state.monsters.filter((monster) => monster.name.toLowerCase().includes(search_string.toLowerCase()));
-		this.setState(() => {
-			return { searchResults: new_monsters_list };
-		});
+	const onSearchChange = (event) => {
+		setSearchString(event.target.value);
 	};
 
-	render() {
-		const { searchResults } = this.state;
-		const { onSearchChange } = this;
-		return (
-			<div className="App">
-				<SearchInput className="search-box" onSearchChange={onSearchChange} placeholder="Search for monsters" />
-				<CardList searchResults={searchResults} />
-			</div>
-		);
-	}
-}
+	return (
+		<div className="App">
+			<SearchInput className="search-box" onSearchChange={onSearchChange} placeholder="Search for monsters" />
+			<CardList searchResults={searchResults} />
+		</div>
+	);
+};
 
-export default Component_Name;
+export default App;
