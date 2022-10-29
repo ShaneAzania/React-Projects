@@ -5,7 +5,7 @@ import Directory from "../../components/directory/directory";
 
 function Home() {
 	return (
-		<div className="App">
+		<div className="Home">
 			<Directory categories={categories} />
 		</div>
 	);
