@@ -46,12 +46,7 @@ export default function SignUpForm() {
 		}
 
 		// create user
-		try {
-			const response = await createAuthUserWithEmailAndPassword(email, password);
-			console.log(response);
-		} catch (error) {
-			console.log("There was an error trying to create this user with email and password:", error);
-		}
+		await createAuthUserWithEmailAndPassword(email, password, displayName);
 	};
 
 	return (

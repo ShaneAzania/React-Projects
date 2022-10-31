@@ -65,12 +65,22 @@ export const createUserDocRefFromAuth = async (userAuth) => {
 // use these function in an onClick of a signIn button
 export const logGoogleUsersWithPopUp = async () => {
 	const { user } = await signInWithGooglePopup();
-	return createUserDocRefFromAuth(user);
+	const userAuth = user;
+	return await createUserDocRefFromAuth(userAuth);
 };
 
 // Create user With email and password
-export const createAuthUserWithEmailAndPassword = async (email, password) => {
+export const createAuthUserWithEmailAndPassword = async (email, password, displayName) => {
 	if (!email || !password) return;
 
-	return createUserWithEmailAndPassword(auth, email, password);
+	try {
+		const { user } = await createUserWithEmailAndPassword(auth, email, password);
+		const userAuth = { ...user, displayName: displayName };
+		return await createUserDocRefFromAuth(userAuth);
+	} catch (error) {
+		if (error.code === "auth/email-already-in-use") {
+			alert("Email already registered to a current user. Use a differnt email address.");
+		}
+		console.log("There was an error trying to create this user with email and password:", error);
+	}
 };
