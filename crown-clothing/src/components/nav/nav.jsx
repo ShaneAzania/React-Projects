@@ -11,6 +11,9 @@ function Nav() {
 					<Logo className="logo" />
 				</Link>
 				<div className="nav-links-container">
+					<Link className="nav-link" to="/">
+						Home
+					</Link>
 					<Link className="nav-link" to="/shop">
 						Shop
 					</Link>
