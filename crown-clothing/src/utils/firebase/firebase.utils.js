@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -27,22 +27,23 @@ provider_Google.setCustomParameters({
 // Authentication
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider_Google);
-export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider_Google);
+export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider_Google); // redirect not sending data to firebase Auth in Firebase Console
 
 // create Database object
 export const db = getFirestore();
 // Create user in firestore database and return signed in credentials from userDocRef
 export const createUserDocRefFromAuth = async (userAuth) => {
-	console.log("userAuth:", userAuth);
+	if (!userAuth) return;
+	// console.log("userAuth:", userAuth);
 
 	// create a user object with data from the provider
 	const userDocRef = doc(db, "users", userAuth.uid); // (database, 'collection string', aUniqueID/recordKey)
-	console.log("userDocRef:", userDocRef);
+	// console.log("userDocRef:", userDocRef);
 
 	//getDoc(userDocRef) checks the firestore database for the existence of this userDocRef
 	const userSnapShot = await getDoc(userDocRef);
-	console.log("userSnapShot:", userSnapShot);
-	console.log("userSnapShot exists:", userSnapShot.exists());
+	// console.log("userSnapShot:", userSnapShot);
+	// console.log("userSnapShot exists:", userSnapShot.exists());
 
 	// if user does not already exist then create the user document
 	if (!userSnapShot.exists()) {
@@ -64,5 +65,12 @@ export const createUserDocRefFromAuth = async (userAuth) => {
 // use these function in an onClick of a signIn button
 export const logGoogleUsersWithPopUp = async () => {
 	const { user } = await signInWithGooglePopup();
-	const userDocRef = createUserDocRefFromAuth(user);
+	return createUserDocRefFromAuth(user);
+};
+
+// Create user With email and password
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+	if (!email || !password) return;
+
+	return createUserWithEmailAndPassword(auth, email, password);
 };

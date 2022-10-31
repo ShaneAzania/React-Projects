@@ -1,5 +1,6 @@
 import "./sign-up-form.scss";
 import { useState } from "react";
+import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 
 export default function SignUpForm() {
 	const [formFields, setFormFields] = useState({
@@ -10,13 +11,51 @@ export default function SignUpForm() {
 	});
 	const { displayName, email, password, confirmPassword } = formFields;
 
+	// console.log(formFields);
+
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setFormFields({ ...formFields, [name]: value });
 	};
 
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		var valid = true;
+
+		if (displayName.length < 5) {
+			valid = false;
+			alert("Display name must be at least 5 charcters long");
+		}
+
+		if (password !== confirmPassword) {
+			valid = false;
+			alert("Passwords do not match");
+		}
+		if (password.length < 8) {
+			valid = false;
+			alert("Password must be at least 8 characters long");
+		}
+
+		if (email.length < 6) {
+			valid = false;
+			alert("Pnvalid email");
+		}
+
+		if (!valid) {
+			return;
+		}
+
+		// create user
+		try {
+			const response = await createAuthUserWithEmailAndPassword(email, password);
+			console.log(response);
+		} catch (error) {
+			console.log("There was an error trying to create this user with email and password:", error);
+		}
+	};
+
 	return (
-		<form action="" method="POST" className="col-12 col-md-4" onSubmit={() => {}}>
+		<form action="" method="POST" className="col-12 col-md-4" onSubmit={handleSubmit}>
 			<h1> Sign-Up </h1>
 			<div className="mb-3">
 				<label htmlFor="displayName" className="form-label">
@@ -43,7 +82,7 @@ export default function SignUpForm() {
 				<input
 					type="password"
 					className="form-control"
-					name="password2"
+					name="confirmPassword"
 					required
 					placeholder=""
 					onChange={handleChange}
