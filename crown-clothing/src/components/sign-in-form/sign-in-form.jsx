@@ -3,7 +3,7 @@ import { logGoogleUsersWithPopUp } from "../../utils/firebase/firebase.utils";
 
 export default function SignInForm() {
 	return (
-		<form action="" method="POST" className="col-12 col-md-4" onSubmit={() => {}}>
+		<form action="" method="POST" className="col-sm-12 col-md-6 col-lg-4 col-xl-3" onSubmit={() => {}}>
 			<h1> Sign-In </h1>
 			<div className="mb-3">
 				<label htmlFor="email" className="form-label">

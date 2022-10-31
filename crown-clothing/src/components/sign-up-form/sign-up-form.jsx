@@ -1,17 +1,17 @@
 import "./sign-up-form.scss";
 import { useState } from "react";
 import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
-
+const defaultFormFields = {
+	displayName: "",
+	email: "",
+	password: "",
+	confirmPassword: "",
+};
 export default function SignUpForm() {
-	const [formFields, setFormFields] = useState({
-		displayName: "",
-		email: "",
-		password: "",
-		confirmPassword: "",
-	});
+	const [formFields, setFormFields] = useState(defaultFormFields);
 	const { displayName, email, password, confirmPassword } = formFields;
 
-	// console.log(formFields);
+	const resetFormFields = () => setFormFields(defaultFormFields);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -46,11 +46,14 @@ export default function SignUpForm() {
 		}
 
 		// create user
-		await createAuthUserWithEmailAndPassword(email, password, displayName);
+		if (await createAuthUserWithEmailAndPassword(email, password, displayName)) {
+			// reset form fields
+			resetFormFields();
+		}
 	};
 
 	return (
-		<form action="" method="POST" className="col-12 col-md-4" onSubmit={handleSubmit}>
+		<form action="" method="POST" className="col-sm-12 col-md-6 col-lg-4 col-xl-3" onSubmit={handleSubmit}>
 			<h1> Sign-Up </h1>
 			<div className="mb-3">
 				<label htmlFor="displayName" className="form-label">
