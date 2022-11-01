@@ -1,5 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+	getAuth,
+	signInWithRedirect,
+	signInWithPopup,
+	GoogleAuthProvider,
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+} from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -27,7 +34,7 @@ provider_Google.setCustomParameters({
 // Authentication
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider_Google);
-export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider_Google); // redirect not sending data to firebase Auth in Firebase Console
+// export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider_Google); // redirect not sending data to firebase Auth in Firebase Console
 
 // create Database object
 export const db = getFirestore();
@@ -66,6 +73,7 @@ export const createUserDocRefFromAuth = async (userAuth) => {
 export const logGoogleUsersWithPopUp = async () => {
 	const { user } = await signInWithGooglePopup();
 	const userAuth = user;
+	// console.log(userAuth);
 	return await createUserDocRefFromAuth(userAuth);
 };
 
@@ -76,11 +84,34 @@ export const createAuthUserWithEmailAndPassword = async (email, password, displa
 	try {
 		const { user } = await createUserWithEmailAndPassword(auth, email, password);
 		const userAuth = { ...user, displayName: displayName };
-		return await createUserDocRefFromAuth(userAuth);
+
+		await createUserDocRefFromAuth(userAuth);
+		return userAuth;
 	} catch (error) {
 		if (error.code === "auth/email-already-in-use") {
 			alert("Email already registered to a current user. Use a differnt email address.");
 		}
 		console.log("There was an error trying to create this user with email and password:", error);
+	}
+};
+
+// sign in with email and password
+export const signInUsingEmailAndPassword = async (email, password) => {
+	if (!email || !password) return;
+
+	try {
+		return await signInWithEmailAndPassword(auth, email, password);
+	} catch (error) {
+		switch (error.code) {
+			case "auth/user-not-found":
+				alert("User not found.");
+				break;
+			case "auth/wrong-password":
+				alert("Incorrect password.");
+				break;
+			default:
+                console.log("There was an error trying to create this user with email and password:", error);
+		}
+
 	}
 };

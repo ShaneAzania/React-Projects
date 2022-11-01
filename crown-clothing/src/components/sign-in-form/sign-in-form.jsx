@@ -1,30 +1,44 @@
 import "./sign-in-form.scss";
-import { logGoogleUsersWithPopUp } from "../../utils/firebase/firebase.utils";
+import { useState } from "react";
+import { logGoogleUsersWithPopUp, signInUsingEmailAndPassword } from "../../utils/firebase/firebase.utils";
+import FormInput from "../form-input/form-input";
 
-export default function SignInForm() {
+const defaultFormFields = {
+	email: "",
+	password: "",
+};
+export default function SignInForm({ className }) {
+	const [formFields, setFormFields] = useState(defaultFormFields);
+	const { email, password } = formFields;
+
+	const resetFormFields = () => setFormFields(defaultFormFields);
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setFormFields({ ...formFields, [name]: value });
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		const response = await signInUsingEmailAndPassword(email, password);
+		const userAuth = response.user;
+		// console.log(userAuth);
+		if (response) resetFormFields();
+	};
+
 	return (
-		<form action="" method="POST" className="col-sm-12 col-md-6 col-lg-4 col-xl-3" onSubmit={() => {}}>
-			<h1> Sign-In </h1>
-			<div className="mb-3">
-				<label htmlFor="email" className="form-label">
-					Email
-				</label>
-				<input type="email" className="form-control" name="email" required placeholder="abc@mail.com" />
-			</div>
-			<div className="mb-3">
-				<label htmlFor="password" className="form-label">
-					Password
-				</label>
-				<input type="password" className="form-control" name="password" required placeholder="" />
-			</div>
-			<div className="d-grid gap-2">
-				<button className="btn btn-outline-danger" type="submit">
+		<div className={className}>
+			<form action="" method="POST" className="" onSubmit={handleSubmit}>
+				<h1> Sign-In </h1>
+				<FormInput label="Email" name="email" onChange={handleChange} type="email" value={email} />
+				<FormInput label="Password" name="password" onChange={handleChange} type="password" value={password} />
+				<button className="btn btn-outline-dark w-100 rounded-0 mb-2" type="submit">
 					Sign-In
 				</button>
-				<button className="btn btn-outline-success" onClick={logGoogleUsersWithPopUp}>
-					Google Sign In
-				</button>
-			</div>
-		</form>
+			</form>
+			<button className="btn btn-outline-primary w-100 rounded-0" onClick={logGoogleUsersWithPopUp}>
+				Google Sign In
+			</button>
+		</div>
 	);
 }

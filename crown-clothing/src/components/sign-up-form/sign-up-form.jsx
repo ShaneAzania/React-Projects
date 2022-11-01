@@ -1,13 +1,15 @@
 import "./sign-up-form.scss";
 import { useState } from "react";
 import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
+import { logGoogleUsersWithPopUp } from "../../utils/firebase/firebase.utils";
+import FormInput from "../form-input/form-input";
 const defaultFormFields = {
 	displayName: "",
 	email: "",
 	password: "",
 	confirmPassword: "",
 };
-export default function SignUpForm() {
+export default function SignUpForm({ className }) {
 	const [formFields, setFormFields] = useState(defaultFormFields);
 	const { displayName, email, password, confirmPassword } = formFields;
 
@@ -20,13 +22,13 @@ export default function SignUpForm() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		var valid = true;
 
+		//validate fileds
+		var valid = true;
 		if (displayName.length < 5) {
 			valid = false;
 			alert("Display name must be at least 5 charcters long");
 		}
-
 		if (password !== confirmPassword) {
 			valid = false;
 			alert("Passwords do not match");
@@ -35,63 +37,48 @@ export default function SignUpForm() {
 			valid = false;
 			alert("Password must be at least 8 characters long");
 		}
-
 		if (email.length < 6) {
 			valid = false;
 			alert("Pnvalid email");
 		}
-
 		if (!valid) {
 			return;
 		}
 
 		// create user
-		if (await createAuthUserWithEmailAndPassword(email, password, displayName)) {
-			// reset form fields
-			resetFormFields();
-		}
+		const response = await createAuthUserWithEmailAndPassword(email, password, displayName);
+		// console.log(response);
+		if (response) resetFormFields();
 	};
 
 	return (
-		<form action="" method="POST" className="col-sm-12 col-md-6 col-lg-4 col-xl-3" onSubmit={handleSubmit}>
-			<h1> Sign-Up </h1>
-			<div className="mb-3">
-				<label htmlFor="displayName" className="form-label">
-					Display Name
-				</label>
-				<input type="text" className="form-control" name="displayName" required placeholder="" onChange={handleChange} value={displayName} />
-			</div>
-			<div className="mb-3">
-				<label htmlFor="email" className="form-label">
-					Email
-				</label>
-				<input type="email" className="form-control" name="email" required placeholder="abc@mail.com" onChange={handleChange} value={email} />
-			</div>
-			<div className="mb-3">
-				<label htmlFor="password" className="form-label">
-					Password
-				</label>
-				<input type="password" className="form-control" name="password" required placeholder="" onChange={handleChange} value={password} />
-			</div>
-			<div className="mb-3">
-				<label htmlFor="password" className="form-label">
-					Re-enter Password
-				</label>
-				<input
-					type="password"
-					className="form-control"
-					name="confirmPassword"
-					required
-					placeholder=""
+		<div className={className}>
+			<form action="" method="POST" onSubmit={handleSubmit}>
+				<h1> Don't Have An Account? </h1>
+				<h2> Sign-Up </h2>
+				<FormInput
+					label="Display Name"
+					name="displayName"
 					onChange={handleChange}
+					type="text"
+					value={displayName}
+				/>
+				<FormInput label="Email" name="email" onChange={handleChange} type="email" value={email} />
+				<FormInput label="Password" name="password" onChange={handleChange} type="password" value={password} />
+				<FormInput
+					label="Confirm Password"
+					name="confirmPassword"
+					onChange={handleChange}
+					type="password"
 					value={confirmPassword}
 				/>
-			</div>
-			<div className="d-grid gap-2">
-				<button className="btn btn-block btn-outline-warning radius-0" type="submit">
+				<button className="btn btn-block btn-outline-dark rounded-0 w-100 mb-2" type="submit">
 					Sign Up
 				</button>
-			</div>
-		</form>
+			</form>
+			<button className="btn btn-outline-primary rounded-0 w-100" onClick={logGoogleUsersWithPopUp}>
+				Google Sign Up
+			</button>
+		</div>
 	);
 }
