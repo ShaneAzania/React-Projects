@@ -1,4 +1,4 @@
-import "./sign-in-up.scss";
+import "./sign-in-up.route.scss";
 import { Fragment } from "react";
 import SignInForm from "../../components/sign-in-form/sign-in-form";
 import SignUpForm from "../../components/sign-up-form/sign-up-form";

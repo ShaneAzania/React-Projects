@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import {
 	getAuth,
-	signInWithRedirect,
+	// signInWithRedirect,
 	signInWithPopup,
 	GoogleAuthProvider,
 	createUserWithEmailAndPassword,
@@ -73,8 +73,8 @@ export const createUserDocRefFromAuth = async (userAuth) => {
 export const logGoogleUsersWithPopUp = async () => {
 	const { user } = await signInWithGooglePopup();
 	const userAuth = user;
-	// console.log(userAuth);
-	return await createUserDocRefFromAuth(userAuth);
+	await createUserDocRefFromAuth(userAuth);
+	return userAuth;
 };
 
 // Create user With email and password
@@ -110,8 +110,7 @@ export const signInUsingEmailAndPassword = async (email, password) => {
 				alert("Incorrect password.");
 				break;
 			default:
-                console.log("There was an error trying to create this user with email and password:", error);
+				console.log("There was an error trying to create this user with email and password:", error);
 		}
-
 	}
 };

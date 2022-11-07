@@ -3,11 +3,16 @@ import { useState } from "react";
 import { logGoogleUsersWithPopUp, signInUsingEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input";
 
+import { useContext } from "react";
+import { UserContext } from "../../contexts/user.context";
+
 const defaultFormFields = {
 	email: "",
 	password: "",
 };
 export default function SignInForm({ className }) {
+	const { setCurrenntUser } = useContext(UserContext);
+
 	const [formFields, setFormFields] = useState(defaultFormFields);
 	const { email, password } = formFields;
 
@@ -23,7 +28,15 @@ export default function SignInForm({ className }) {
 		const response = await signInUsingEmailAndPassword(email, password);
 		const userAuth = response.user;
 		// console.log(userAuth);
-		if (response) resetFormFields();
+		if (response) {
+			setCurrenntUser(userAuth);
+			resetFormFields();
+		}
+	};
+
+	const handleGoogleSignIn = async () => {
+		const userAuth = await logGoogleUsersWithPopUp();
+		setCurrenntUser(userAuth);
 	};
 
 	return (
@@ -36,7 +49,7 @@ export default function SignInForm({ className }) {
 					Sign-In
 				</button>
 			</form>
-			<button className="btn btn-outline-primary w-100 rounded-0" onClick={logGoogleUsersWithPopUp}>
+			<button className="btn btn-outline-primary w-100 rounded-0" onClick={handleGoogleSignIn}>
 				Google Sign In
 			</button>
 		</div>

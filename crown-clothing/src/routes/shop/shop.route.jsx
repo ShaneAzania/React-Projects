@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import "./shop.scss";
+import "./shop.route.scss";
 // import categories from "../../data/categories.json";
 // import Directory from "../../components/directory/directory";
 

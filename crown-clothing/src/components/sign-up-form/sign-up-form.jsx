@@ -1,8 +1,14 @@
 import "./sign-up-form.scss";
+
 import { useState } from "react";
-import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
-import { logGoogleUsersWithPopUp } from "../../utils/firebase/firebase.utils";
+
+import { createAuthUserWithEmailAndPassword, logGoogleUsersWithPopUp } from "../../utils/firebase/firebase.utils";
+
 import FormInput from "../form-input/form-input";
+
+import { useContext } from "react";
+import { UserContext } from "../../contexts/user.context";
+
 const defaultFormFields = {
 	displayName: "",
 	email: "",
@@ -10,6 +16,8 @@ const defaultFormFields = {
 	confirmPassword: "",
 };
 export default function SignUpForm({ className }) {
+	const { currenntUser, setCurrenntUser } = useContext(UserContext);
+
 	const [formFields, setFormFields] = useState(defaultFormFields);
 	const { displayName, email, password, confirmPassword } = formFields;
 
@@ -25,30 +33,37 @@ export default function SignUpForm({ className }) {
 
 		//validate fileds
 		var valid = true;
+		try {
+			if (currenntUser) {
+				valid = false;
+				alert("A user is already logged in.");
+			}
+		} catch (error) {}
 		if (displayName.length < 5) {
 			valid = false;
-			alert("Display name must be at least 5 charcters long");
+			alert("Display name must be at least 5 charcters long.");
 		}
 		if (password !== confirmPassword) {
 			valid = false;
-			alert("Passwords do not match");
+			alert("Passwords do not match.");
 		}
 		if (password.length < 8) {
 			valid = false;
-			alert("Password must be at least 8 characters long");
+			alert("Password must be at least 8 characters long.");
 		}
 		if (email.length < 6) {
 			valid = false;
-			alert("Pnvalid email");
+			alert("Pnvalid email.");
 		}
 		if (!valid) {
 			return;
 		}
 
 		// create user
-		const response = await createAuthUserWithEmailAndPassword(email, password, displayName);
-		// console.log(response);
-		if (response) resetFormFields();
+		const userAuth = await createAuthUserWithEmailAndPassword(email, password, displayName);
+		// console.log(userAuth);
+		setCurrenntUser(userAuth);
+		if (userAuth) resetFormFields();
 	};
 
 	return (

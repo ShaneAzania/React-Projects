@@ -1,9 +1,9 @@
 import "./App.scss";
 import "bootstrap";
 import Nav from "./components/nav/nav";
-import Home from "./routes/home/home";
-import Shop from "./routes/shop/shop";
-import SignInUp from "./routes/sign-in-up/sign-in-up";
+import Home from "./routes/home/home.route";
+import Shop from "./routes/shop/shop.route";
+import SignInUp from "./routes/sign-in-up/sign-in-up.route";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
