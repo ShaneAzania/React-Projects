@@ -16,7 +16,7 @@ const defaultFormFields = {
 	confirmPassword: "",
 };
 export default function SignUpForm({ className }) {
-	const { currenntUser, setCurrenntUser } = useContext(UserContext);
+	const { setCurrenntUser } = useContext(UserContext);
 
 	const [formFields, setFormFields] = useState(defaultFormFields);
 	const { displayName, email, password, confirmPassword } = formFields;
@@ -33,13 +33,13 @@ export default function SignUpForm({ className }) {
 
 		//validate fileds
 		var valid = true;
-		try {
-			if (currenntUser) {
-				valid = false;
-				alert("A user is already logged in.");
-			}
-		} catch (error) {}
-		if (displayName.length < 5) {
+		// try {
+		// 	if (currenntUser) {
+		// 		valid = false;
+		// 		alert("A user is already logged in.");
+		// 	}
+		// } catch (error) {}
+		if (displayName.length < 4) {
 			valid = false;
 			alert("Display name must be at least 5 charcters long.");
 		}
@@ -61,9 +61,14 @@ export default function SignUpForm({ className }) {
 
 		// create user
 		const userAuth = await createAuthUserWithEmailAndPassword(email, password, displayName);
-		// console.log(userAuth);
+		// console.log("sign-up:", userAuth);
 		setCurrenntUser(userAuth);
 		if (userAuth) resetFormFields();
+	};
+
+	const handleGoogleSignIn = async () => {
+		const userAuth = await logGoogleUsersWithPopUp();
+		setCurrenntUser(userAuth);
 	};
 
 	return (
@@ -91,7 +96,7 @@ export default function SignUpForm({ className }) {
 					Sign Up
 				</button>
 			</form>
-			<button className="btn btn-outline-primary rounded-0 w-100" onClick={logGoogleUsersWithPopUp}>
+			<button className="btn btn-outline-primary rounded-0 w-100" onClick={handleGoogleSignIn}>
 				Google Sign Up
 			</button>
 		</div>

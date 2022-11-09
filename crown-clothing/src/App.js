@@ -20,6 +20,10 @@ function App() {
 			text: "Sign-In",
 			to: "/sign-in-up",
 		},
+		{
+			text: "Sign-Out",
+			to: "#",
+		},
 	];
 
 	return (
@@ -28,6 +32,7 @@ function App() {
 				<Route index element={<Home />} />
 				<Route path="shop" element={<Shop />} />
 				<Route path="sign-in-up" element={<SignInUp />} />
+				<Route path="sign-out" element={<SignInUp />} />
 			</Route>
 		</Routes>
 	);
