@@ -106,7 +106,13 @@ export const signInUsingEmailAndPassword = async (email, password) => {
 	}
 
 	try {
-		return await signInWithEmailAndPassword(auth, email, password);
+		const result = await signInWithEmailAndPassword(auth, email, password);
+		var userAuth = result.user;
+
+		userAuth = await getUserDisplayNameFromeFireStore(userAuth);
+
+		// console.log("signInUsingEmailAndPassword: userAuth:", userAuth);
+		return userAuth;
 	} catch (error) {
 		switch (error.code) {
 			case "auth/user-not-found":
@@ -119,6 +125,13 @@ export const signInUsingEmailAndPassword = async (email, password) => {
 				console.log("There was an error trying to create this user with email and password:", error);
 		}
 	}
+};
+export const getUserDisplayNameFromeFireStore = async (userAuth) => {
+	const userDocRef = doc(db, "users", userAuth.uid);
+	const userSnapShot = await getDoc(userDocRef);
+	const displayName = userSnapShot.data().displayName;
+
+	return (userAuth = { ...userAuth, displayName: displayName });
 };
 
 // sign out user

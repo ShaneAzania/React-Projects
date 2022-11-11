@@ -11,12 +11,10 @@ import { UserContext } from "../../contexts/user.context";
 function Nav({ links }) {
 	const { currenntUser, setCurrenntUser } = useContext(UserContext);
 
-	let userDisplayNameOrEmail = "";
+	let userDisplayName = "";
 
 	try {
-		currenntUser.displayName
-			? (userDisplayNameOrEmail = currenntUser.displayName)
-			: (userDisplayNameOrEmail = currenntUser.email);
+		userDisplayName = currenntUser.displayName;
 	} catch (error) {}
 
 	const handleSignOutClick = async (e) => {
@@ -54,8 +52,8 @@ function Nav({ links }) {
 							}
 						} else return null;
 					})}
-					<Link key="userDisplayNameOrEmail" className="nav-link" to="#">
-						{userDisplayNameOrEmail}
+					<Link key="userDisplayName" className="nav-link" to="#">
+						{userDisplayName}
 					</Link>
 				</div>
 			</div>

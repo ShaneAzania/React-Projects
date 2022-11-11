@@ -25,10 +25,9 @@ export default function SignInForm({ className }) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const response = await signInUsingEmailAndPassword(email, password);
-		const userAuth = response.user;
-		// console.log("sign-in:", userAuth);
-		if (response) {
+		const userAuth = await signInUsingEmailAndPassword(email, password);
+		console.log("sign-in: handleSubmit: userAuth:", userAuth);
+		if (userAuth) {
 			setCurrenntUser(userAuth);
 			resetFormFields();
 		}
