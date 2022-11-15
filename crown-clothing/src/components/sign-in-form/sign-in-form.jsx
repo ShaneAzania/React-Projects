@@ -3,15 +3,12 @@ import { useState } from "react";
 import { logGoogleUsersWithPopUp, signInUsingEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input";
 
-import { useContext } from "react";
-import { UserContext } from "../../contexts/user.context";
-
 const defaultFormFields = {
 	email: "",
 	password: "",
 };
 export default function SignInForm({ className }) {
-	const { setCurrenntUser } = useContext(UserContext);
+	// const { setCurrenntUser } = useContext(UserContext);
 
 	const [formFields, setFormFields] = useState(defaultFormFields);
 	const { email, password } = formFields;
@@ -26,17 +23,13 @@ export default function SignInForm({ className }) {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const userAuth = await signInUsingEmailAndPassword(email, password);
-		console.log("sign-in: handleSubmit: userAuth:", userAuth);
+		// console.log("sign-in: handleSubmit: userAuth:", userAuth);
 		if (userAuth) {
-			setCurrenntUser(userAuth);
 			resetFormFields();
 		}
 	};
 
-	const handleGoogleSignIn = async () => {
-		const userAuth = await logGoogleUsersWithPopUp();
-		setCurrenntUser(userAuth);
-	};
+	const handleGoogleSignIn = async () => await logGoogleUsersWithPopUp();
 
 	return (
 		<div className={className}>

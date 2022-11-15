@@ -7,8 +7,8 @@ const SignInUP = () => {
 	return (
 		<Fragment>
 			<div className="row px-3 justify-content-center">
-				<SignInForm className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mx-2" />
-				<SignUpForm className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mx-2" />
+				<SignInForm className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mx-2 mb-5" />
+				<SignUpForm className="col-sm-12 col-md-6 col-lg-4 col-xl-3 mx-2 mb-5" />
 			</div>
 		</Fragment>
 	);

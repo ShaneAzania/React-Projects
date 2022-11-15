@@ -10,6 +10,12 @@ import {
 	signOut,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+
+import { useContext } from "react";
+import { UserContext } from "../../contexts/user.context";
+
+// const { } = useContext(UserContext);
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,7 +28,6 @@ const firebaseConfig = {
 	messagingSenderId: "453083291674",
 	appId: "1:453083291674:web:513447b479833089a071a3",
 };
-
 // Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);
 
@@ -75,6 +80,7 @@ export const createUserDocRefFromAuth = async (userAuth) => {
 export const logGoogleUsersWithPopUp = async () => {
 	const { user } = await signInWithGooglePopup();
 	const userAuth = user;
+	// console.log("firebase.utils: logGoogleUsersWithPopUp: userAuth", userAuth);
 	await createUserDocRefFromAuth(userAuth);
 	return userAuth;
 };
@@ -86,7 +92,7 @@ export const createAuthUserWithEmailAndPassword = async (email, password, displa
 	try {
 		const { user } = await createUserWithEmailAndPassword(auth, email, password);
 		const userAuth = { ...user, displayName: displayName };
-		console.log("createAuthUserWithEmailAndPassword userAuth: ", userAuth);
+		// console.log("createAuthUserWithEmailAndPassword userAuth: ", userAuth);
 
 		await createUserDocRefFromAuth(userAuth);
 		return userAuth;
@@ -106,8 +112,8 @@ export const signInUsingEmailAndPassword = async (email, password) => {
 	}
 
 	try {
-		const result = await signInWithEmailAndPassword(auth, email, password);
-		var userAuth = result.user;
+		const { user } = await signInWithEmailAndPassword(auth, email, password);
+		var userAuth = user;
 
 		userAuth = await getUserDisplayNameFromeFireStore(userAuth);
 
@@ -129,9 +135,10 @@ export const signInUsingEmailAndPassword = async (email, password) => {
 export const getUserDisplayNameFromeFireStore = async (userAuth) => {
 	const userDocRef = doc(db, "users", userAuth.uid);
 	const userSnapShot = await getDoc(userDocRef);
-	const displayName = userSnapShot.data().displayName;
+	const displayName = await userSnapShot.data().displayName;
+	// console.log("firebase.utils: getUserDisplayNameFromeFireStore: userSnapShot.data():", userSnapShot.data());
 
-	return (userAuth = { ...userAuth, displayName: displayName });
+	return (userAuth = { ...userAuth, displayName });
 };
 
 // sign out user
