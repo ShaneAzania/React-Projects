@@ -14,14 +14,21 @@ export const UserProvider = ({ children }) => {
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChangedListener(async (user) => {
+			//try to get display name into current user before setCurrentUser
 			var userAuthWithDisplayName = null;
 
 			try {
 				userAuthWithDisplayName = await getUserDisplayNameFromeFireStore(user);
+				console.log(
+					"userContext: onAuthStateChangedListener: try: userAuthWithDisplayName:",
+					userAuthWithDisplayName
+				);
 			} catch (error) {
-				console.log("userContext: onAuthStateChangedListener: try/catch: userAuth:", user);
+				console.log("userContext: onAuthStateChangedListener: catch: user:", user);
+				// console.log("userContext:", error);
 			}
 
+			//set current user
 			if (user && userAuthWithDisplayName) {
 				console.log(
 					"userContext: onAuthStateChangedListener: if/else: userAuthWithDisplayName:",

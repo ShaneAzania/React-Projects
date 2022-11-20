@@ -3,23 +3,31 @@ import { ReactComponent as Logo } from "../../assets/crown.svg";
 import { Link, Outlet } from "react-router-dom";
 import { Fragment } from "react";
 
-import { signOutUser } from "../../utils/firebase/firebase.utils";
+import { signOutUser, getUserDisplayNameFromeFireStore } from "../../utils/firebase/firebase.utils";
 
 import { useContext } from "react";
 import { UserContext } from "../../contexts/user.context";
 
 function Nav({ links }) {
-	const { currenntUser, setCurrenntUser } = useContext(UserContext);
+	const { currenntUser } = useContext(UserContext);
+	var userWithDisplayName;
+
+	const getUsersDisplayName = async () => {
+		if (!currenntUser) {
+		} else userWithDisplayName = await getUserDisplayNameFromeFireStore(currenntUser);
+	};
+	getUsersDisplayName();
+
+	console.log("nav: userWithDisplayName:", userWithDisplayName);
 
 	let userDisplayName = "";
 
 	try {
-		userDisplayName = currenntUser.displayName;
+		userDisplayName = !currenntUser.displayName ? currenntUser.email : currenntUser.displayName;
 	} catch (error) {}
 
 	const handleSignOutClick = async (e) => {
 		await signOutUser();
-		setCurrenntUser(null);
 	};
 
 	return (

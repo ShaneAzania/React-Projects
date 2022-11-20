@@ -11,9 +11,6 @@ import {
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
-import { useContext } from "react";
-import { UserContext } from "../../contexts/user.context";
-
 // const { } = useContext(UserContext);
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -134,9 +131,21 @@ export const signInUsingEmailAndPassword = async (email, password) => {
 };
 export const getUserDisplayNameFromeFireStore = async (userAuth) => {
 	const userDocRef = doc(db, "users", userAuth.uid);
-	const userSnapShot = await getDoc(userDocRef);
-	const displayName = await userSnapShot.data().displayName;
-	// console.log("firebase.utils: getUserDisplayNameFromeFireStore: userSnapShot.data():", userSnapShot.data());
+	var userSnapShot = await getDoc(userDocRef);
+	var displayName;
+	// console.log("firebase.utils: getUserDisplayNameFromeFireStore: userSnapShot.data() 1:", userSnapShot.data());
+
+	//if displayName is null, set time out to give firestore some time to finish storing data
+	if (!userSnapShot.exists()) {
+		setTimeout(async () => {
+			userSnapShot = await getDoc(userDocRef);
+			displayName = await userSnapShot.data().displayName;
+			console.log(
+				"firebase.utils: getUserDisplayNameFromeFireStore: userSnapShot.data() 2:",
+				userSnapShot.data()
+			);
+		}, 5000);
+	} else displayName = await userSnapShot.data().displayName;
 
 	return (userAuth = { ...userAuth, displayName });
 };

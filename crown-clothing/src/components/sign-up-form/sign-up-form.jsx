@@ -6,9 +6,6 @@ import { createAuthUserWithEmailAndPassword, logGoogleUsersWithPopUp } from "../
 
 import FormInput from "../form-input/form-input";
 
-import { useContext } from "react";
-import { UserContext } from "../../contexts/user.context";
-
 const defaultFormFields = {
 	displayName: "",
 	email: "",
@@ -16,8 +13,6 @@ const defaultFormFields = {
 	confirmPassword: "",
 };
 export default function SignUpForm({ className }) {
-	const { setCurrenntUser } = useContext(UserContext);
-
 	const [formFields, setFormFields] = useState(defaultFormFields);
 	const { displayName, email, password, confirmPassword } = formFields;
 
@@ -62,14 +57,11 @@ export default function SignUpForm({ className }) {
 		// create user
 		const userAuth = await createAuthUserWithEmailAndPassword(email, password, displayName);
 		// console.log("sign-up:", userAuth);
-		setCurrenntUser(userAuth);
+
 		if (userAuth) resetFormFields();
 	};
 
-	const handleGoogleSignIn = async () => {
-		const userAuth = await logGoogleUsersWithPopUp();
-		setCurrenntUser(userAuth);
-	};
+	const handleGoogleSignIn = async () => await logGoogleUsersWithPopUp();
 
 	return (
 		<div className={className}>
