@@ -19,24 +19,24 @@ export const UserProvider = ({ children }) => {
 
 			try {
 				userAuthWithDisplayName = await getUserDisplayNameFromeFireStore(user);
-				console.log(
-					"userContext: onAuthStateChangedListener: try: userAuthWithDisplayName:",
-					userAuthWithDisplayName
-				);
+				// console.log(
+				// 	"userContext: onAuthStateChangedListener: try: userAuthWithDisplayName:",
+				// 	userAuthWithDisplayName
+				// );
 			} catch (error) {
-				console.log("userContext: onAuthStateChangedListener: catch: user:", user);
+				// console.log("userContext: onAuthStateChangedListener: catch: user:", user);
 				// console.log("userContext:", error);
 			}
 
 			//set current user
 			if (user && userAuthWithDisplayName) {
-				console.log(
-					"userContext: onAuthStateChangedListener: if/else: userAuthWithDisplayName:",
-					userAuthWithDisplayName
-				);
+				// console.log(
+				// 	"userContext: onAuthStateChangedListener: if/else: userAuthWithDisplayName:",
+				// 	userAuthWithDisplayName
+				// );
 				setCurrenntUser(userAuthWithDisplayName);
 			} else if (user && !userAuthWithDisplayName) {
-				console.log("userContext: onAuthStateChangedListener: if/else: user:", user);
+				// console.log("userContext: onAuthStateChangedListener: if/else: user:", user);
 				setCurrenntUser(user);
 			} else {
 				setCurrenntUser(null);

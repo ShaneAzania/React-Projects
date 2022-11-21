@@ -18,7 +18,7 @@ function Nav({ links }) {
 	};
 	getUsersDisplayName();
 
-	console.log("nav: userWithDisplayName:", userWithDisplayName);
+	// console.log("nav: userWithDisplayName:", userWithDisplayName);
 
 	let userDisplayName = "";
 
