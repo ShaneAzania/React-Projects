@@ -1,10 +1,27 @@
-// import logo from './logo.svg';
 import "./shop.route.scss";
-// import categories from "../../data/categories.json";
-// import Directory from "../../components/directory/directory";
+
+import { Fragment } from "react";
+
+import { useContext } from "react";
+import { ProductsContext } from "../../contexts/products.context";
+
+import ProductCard from "../../components/product-card/productCard";
+
+// import SHOP_DATA from "../../data/shop-data.json";
 
 function Shop() {
-	return <h1 className="Shop">Shop</h1>;
+	const { products } = useContext(ProductsContext);
+
+	return (
+		<Fragment>
+			<h1 className="Shop">Shop</h1>
+			<div className="products-container">
+				{products.map((product) => (
+					<ProductCard key={product.id} product={product} />
+				))}
+			</div>
+		</Fragment>
+	);
 }
 
 export default Shop;
