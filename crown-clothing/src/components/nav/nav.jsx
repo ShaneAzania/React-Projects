@@ -36,7 +36,7 @@ function Nav({ links }) {
 		await signOutUser();
 	};
 	const handleCartIconClick = (e) => {
-		isCartOpen === false ? set_isCartOpen(true) : set_isCartOpen(false);
+		set_isCartOpen(!isCartOpen);
 	};
 
 	return (
