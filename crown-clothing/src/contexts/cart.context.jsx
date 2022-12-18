@@ -5,10 +5,10 @@ import {} from "../utils/firebase/firebase.utils";
 export const CartContext = createContext({
 	isCartOpen: false,
 	set_isCartOpen: () => null,
-	cartItems: [],
-	addItemToCart: () => {},
-	subtractItemFromCart: () => {},
-	deleteFromCart: () => {},
+	cartItems: null,
+	addItemToCart: () => null,
+	subtractItemFromCart: () => null,
+	deleteFromCart: () => null,
 });
 
 // provider is the actual component that gets wrapped around other components to give them acces to the context
