@@ -12,8 +12,8 @@ const CartItem = ({ onClick, children, cartItem }) => {
 			<div className="cart-items-details">
 				<span className="cart-item-name">{name}</span>
 				<div className="cart-item-quantity-and-price-container">
-					<span className="cart-item-quantity">{quantity} x </span>
-					<span className="cart-item-price">${price}</span>
+					<span className="cart-item-price">${price} x </span>
+					<span className="cart-item-quantity">{quantity}</span>
 				</div>
 				<div className="changeQuantity">
 					<span className="decreaseCartItem" onClick={() => subtractItemFromCart(cartItem)}>

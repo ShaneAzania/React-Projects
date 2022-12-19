@@ -1,4 +1,4 @@
-import { createContext, useState /*, useEffect*/ } from "react";
+import { createContext, useState, useEffect } from "react";
 import {} from "../utils/firebase/firebase.utils";
 
 // the actual value you want to access
@@ -9,22 +9,21 @@ export const CartContext = createContext({
 	addItemToCart: () => null,
 	subtractItemFromCart: () => null,
 	deleteFromCart: () => null,
+	cartCount: null,
 });
 
 // provider is the actual component that gets wrapped around other components to give them acces to the context
 export const CartProvider = ({ children }) => {
-	const [isCartOpen, set_isCartOpen] = useState(true);
+	const [isCartOpen, set_isCartOpen] = useState(false);
 	const [cartItems, set_cartItems] = useState([]);
-	// cart item structure
-	/*
-		{
-			id: 1,
-			name: "Brown Brim",
-			imageUrl: "https://i.ibb.co/ZYW3VTp/brown-brim.png",
-			price: 25,
-			quantity: 10,
-		}
-	*/
+	const [cartCount, set_cartCount] = useState(0);
+
+	useEffect(() => {
+		var countAccumulator = 0;
+		cartItems.map((item) => (countAccumulator += item.quantity));
+
+		set_cartCount(countAccumulator > 0 ? countAccumulator : 0);
+	}, [cartItems]);
 
 	const addItemToCart = (itemToAdd) => {
 		// If item is already in 'cartItems', increase the quantity value, else add 'itemToAdd'.
@@ -71,12 +70,23 @@ export const CartProvider = ({ children }) => {
 			set_cartItems(updatedCartItemsArray);
 		}
 	};
+
 	const deleteFromCart = (itemToDelete) => {
 		const updatedCartItemsArray = cartItems.filter((item) => item.id !== itemToDelete.id);
 		set_cartItems(updatedCartItemsArray);
 	};
 
-	const value = { isCartOpen, set_isCartOpen, cartItems, addItemToCart, subtractItemFromCart, deleteFromCart };
+	const carCount = () => cartItems.length;
+
+	const value = {
+		isCartOpen,
+		set_isCartOpen,
+		cartItems,
+		addItemToCart,
+		subtractItemFromCart,
+		deleteFromCart,
+		cartCount,
+	};
 
 	// useEffect(() => {
 	// 	// const unsubscribe = onAuthStateChangedListener(async (products) => {
