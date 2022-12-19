@@ -10,6 +10,7 @@ export const CartContext = createContext({
 	subtractItemFromCart: () => null,
 	deleteFromCart: () => null,
 	cartCount: null,
+	cartTotal: null,
 });
 
 // provider is the actual component that gets wrapped around other components to give them acces to the context
@@ -17,12 +18,18 @@ export const CartProvider = ({ children }) => {
 	const [isCartOpen, set_isCartOpen] = useState(false);
 	const [cartItems, set_cartItems] = useState([]);
 	const [cartCount, set_cartCount] = useState(0);
+	const [cartTotal, set_cartTotal] = useState(0);
 
 	useEffect(() => {
-		var countAccumulator = 0;
-		cartItems.map((item) => (countAccumulator += item.quantity));
+		var countAccumulator = 0,
+			totalAccumulator = 0;
+		cartItems.map(({ quantity, price }) => {
+			countAccumulator += quantity;
+			totalAccumulator += price * quantity;
+		});
 
-		set_cartCount(countAccumulator > 0 ? countAccumulator : 0);
+		set_cartCount(countAccumulator);
+		set_cartTotal(totalAccumulator);
 	}, [cartItems]);
 
 	const addItemToCart = (itemToAdd) => {
@@ -76,8 +83,6 @@ export const CartProvider = ({ children }) => {
 		set_cartItems(updatedCartItemsArray);
 	};
 
-	const carCount = () => cartItems.length;
-
 	const value = {
 		isCartOpen,
 		set_isCartOpen,
@@ -86,6 +91,7 @@ export const CartProvider = ({ children }) => {
 		subtractItemFromCart,
 		deleteFromCart,
 		cartCount,
+		cartTotal,
 	};
 
 	// useEffect(() => {
