@@ -26,6 +26,7 @@ export const CartProvider = ({ children }) => {
 		cartItems.map(({ quantity, price }) => {
 			countAccumulator += quantity;
 			totalAccumulator += price * quantity;
+			return 0;
 		});
 
 		set_cartCount(countAccumulator);
@@ -93,12 +94,6 @@ export const CartProvider = ({ children }) => {
 		cartCount,
 		cartTotal,
 	};
-
-	// useEffect(() => {
-	// 	// const unsubscribe = onAuthStateChangedListener(async (products) => {
-	// 	// });
-	// 	// return unsubscribe;
-	// }, []);
 
 	return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
