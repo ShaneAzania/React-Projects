@@ -12,21 +12,19 @@ const CartItem = ({ onClick, children, cartItem }) => {
 			<div className="cart-items-details">
 				<span className="cart-item-name">{name}</span>
 				<div className="cart-item-quantity-and-price-container">
-					<span className="cart-item-price">${price} x </span>
-					<span className="cart-item-quantity">{quantity}</span>
+					<span className="cart-item-price">${price}</span>
 				</div>
 				<div className="changeQuantity">
-					<span className="decreaseCartItem" onClick={() => subtractItemFromCart(cartItem)}>
-						{" "}
-						{"<"}{" "}
-					</span>{" "}
-					<span className="increaseCartItem" onClick={() => addItemToCart(cartItem)}>
-						{" "}
-						{">"}{" "}
+					<span className="increase-decrease-cartItem" onClick={() => subtractItemFromCart(cartItem)}>
+						{"< "}
+					</span>
+					<span className="cart-item-quantity">{quantity}</span>
+					<span className="increase-decrease-cartItem" onClick={() => addItemToCart(cartItem)}>
+						{" >"}
 					</span>
 				</div>
-				<span className="deleteCartItem" onClick={() => deleteFromCart(cartItem)}>
-					Delete
+				<span className="removeCartItem" onClick={() => deleteFromCart(cartItem)}>
+					Remove
 				</span>
 			</div>
 		</div>
