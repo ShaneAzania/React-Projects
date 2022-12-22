@@ -1,0 +1,26 @@
+tr.checkout-item-container {
+	td {
+		vertical-align: middle;
+	}
+	img {
+		height: 100px;
+		margin: 0 1em 0 0;
+	}
+	.increase-decrease-cartItem {
+		cursor: pointer;
+		font-weight: bolder;
+		user-select: none;
+		&:hover {
+			color: rgb(186, 186, 186);
+		}
+	}
+
+	.removeCartItem {
+		color: red;
+		cursor: pointer;
+		user-select: none;
+		&:hover {
+			color: rgb(255, 117, 117);
+		}
+	}
+}

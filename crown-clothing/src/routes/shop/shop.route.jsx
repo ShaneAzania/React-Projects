@@ -14,7 +14,7 @@ function Shop() {
 
 	return (
 		<Fragment>
-			<h1 className="Shop">Shop</h1>
+			<h1 className="Shop ps-3">Shop</h1>
 			<div className="products-container">
 				{products.map((product) => (
 					<ProductCard key={product.id} product={product} />
