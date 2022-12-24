@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
 import {} from "../utils/firebase/firebase.utils";
-import SHOP_DATA from "../data/shop-data.js";
 
 import { getCategoriesAndDocuments } from "../utils/firebase/firebase.utils";
 
@@ -14,13 +13,26 @@ export const CategoriesContext = createContext({
 
 // provider is the actual component that gets wrapped around other components to give them acces to the context
 export const CategoriesProvider = ({ children }) => {
-	const [categories, set_categories] = useState(SHOP_DATA);
+	const [categories, set_categories] = useState([
+		{
+			title: "",
+			items: [
+				{
+					id: 0,
+					name: "",
+					imageUrl: "",
+					price: 0,
+				},
+			],
+		},
+	]);
 	const value = { categories, set_categories };
 
 	useEffect(() => {
 		const getCategoriesMap = async () => {
 			const categoriesMap = await getCategoriesAndDocuments("categories");
 			console.log(categoriesMap);
+			set_categories(categoriesMap);
 		};
 		getCategoriesMap();
 	}, []);
