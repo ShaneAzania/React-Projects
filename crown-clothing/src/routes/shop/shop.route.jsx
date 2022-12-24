@@ -3,21 +3,27 @@ import "./shop.route.scss";
 import { Fragment } from "react";
 
 import { useContext } from "react";
-import { ProductsContext } from "../../contexts/products.context";
+import { CategoriesContext } from "../../contexts/categories.context";
 
 import ProductCard from "../../components/product-card/productCard";
 
 // import SHOP_DATA from "../../data/shop-data.json";
 
 function Shop() {
-	const { products } = useContext(ProductsContext);
+	const { categories } = useContext(CategoriesContext);
 
 	return (
 		<Fragment>
-			<h1 className="Shop ps-3">Shop</h1>
-			<div className="products-container">
-				{products.map((product) => (
-					<ProductCard key={product.id} product={product} />
+			<div className="categories-container container-fluid">
+				{categories.map((category) => (
+					<div key={category.title} className="row mb-5">
+						<h1 className="">{category.title}</h1>
+						<div className="products-container">
+							{category.items.map((product) => (
+								<ProductCard key={product.id} product={product} />
+							))}
+						</div>
+					</div>
 				))}
 			</div>
 		</Fragment>

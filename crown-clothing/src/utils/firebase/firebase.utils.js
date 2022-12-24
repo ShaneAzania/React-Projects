@@ -9,7 +9,7 @@ import {
 	// signInWithRedirect,
 	signOut,
 } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs } from "firebase/firestore";
 
 // const { } = useContext(UserContext);
 
@@ -42,6 +42,30 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider_Google
 
 // create Database object
 export const db = getFirestore();
+
+//  creating collections
+export const addCollectionDocuments = async (collectionKey, objectsToAdd) => {
+	const collectionRef = collection(db, collectionKey),
+		batch = writeBatch(db);
+	objectsToAdd.forEach((object) => {
+		const docRef = doc(collectionRef, object.title.toLowerCase());
+
+		batch.set(docRef, object);
+	});
+
+	await batch.commit();
+};
+// retrieving collections
+export const getCategoriesAndDocuments = async (collectionKey) => {
+	const collectionRef = collection(db, collectionKey.toLowerCase());
+	const q = query(collectionRef);
+
+	const querySnapshot = await getDocs(q);
+	const categoryArray = querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
+
+	return categoryArray;
+};
+
 // Create user in firestore database and return signed in credentials from userDocRef
 export const createUserDocRefFromAuth = async (userAuth) => {
 	if (!userAuth) return;
