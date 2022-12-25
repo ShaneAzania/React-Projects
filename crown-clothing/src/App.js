@@ -5,10 +5,11 @@ import Home from "./routes/home/home.route";
 import Shop from "./routes/shop/shop.route";
 import SignInUp from "./routes/sign-in-up/sign-in-up.route";
 import Checkout from "./routes/checkout/checkout.route";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route /*, useLocation*/ } from "react-router-dom";
 
 function App() {
-	console.log("Current URL:".toUpperCase(), useLocation());
+	// console.log("Current URL:".toUpperCase(), useLocation());
+
 	const navLinks = [
 		{
 			text: "Home",
@@ -43,3 +44,5 @@ function App() {
 }
 
 export default App;
+
+//           <Route path="*" element={<NoPage />} />

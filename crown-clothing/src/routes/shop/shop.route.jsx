@@ -21,7 +21,10 @@ function Shop() {
 					? categories.map((category) => (
 							<div key={category.title} className="row mb-5">
 								<h2 className="col-12 pb-3">
-									<Link className="link-decorations-0 text-dark" to={"/shop/" + category.title}>
+									<Link
+										className="link-decorations-0 text-dark"
+										to={"/shop/" + category.title.toLowerCase()}
+									>
 										{category.title}
 									</Link>
 								</h2>
@@ -35,7 +38,7 @@ function Shop() {
 							</div>
 					  ))
 					: categories
-							.filter((category) => category.title === categoryTitle)
+							.filter((category) => category.title.toLowerCase() === categoryTitle.toLowerCase())
 							.map((category) => (
 								<div key={category.title} className="row mb-5">
 									<h1 className="text-center pb-3">{category.title}</h1>
