@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CategoryItem = ({ id, title, imageUrl }) => {
 	const navigate = useNavigate(),
