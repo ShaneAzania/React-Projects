@@ -1,4 +1,9 @@
-import "./checkout-item.scss";
+import {
+	CheckoutItemContainer,
+	CheckoutItemImg,
+	IncreaseDecreaseCartItem,
+	RemoveCartItem,
+} from "./checkout-item.styles";
 
 import { useContext, Fragment } from "react";
 import { CartContext } from "../../contexts/cart.context";
@@ -8,27 +13,23 @@ const CheckoutItem = ({ onClick, children, item }) => {
 		{ subtractItemFromCart, addItemToCart, deleteFromCart } = useContext(CartContext);
 	return (
 		<Fragment>
-			<tr className="checkout-item-container" key={id}>
+			<CheckoutItemContainer key={id}>
 				<td>
-					<img src={imageUrl} alt={name} />
+					<CheckoutItemImg src={imageUrl} alt={name} />
 					{name}
 				</td>
-				<td className="">
-					<span className="increase-decrease-cartItem" onClick={() => subtractItemFromCart(item)}>
+				<td>
+					<IncreaseDecreaseCartItem onClick={() => subtractItemFromCart(item)}>
 						{"< "}
-					</span>
+					</IncreaseDecreaseCartItem>
 					<span className="cart-item-quantity">{quantity}</span>
-					<span className="increase-decrease-cartItem" onClick={() => addItemToCart(item)}>
-						{" >"}
-					</span>
+					<IncreaseDecreaseCartItem onClick={() => addItemToCart(item)}>{" >"}</IncreaseDecreaseCartItem>
 				</td>
-				<td className="">{price}</td>
-				<td className="">
-					<span className="removeCartItem" onClick={() => deleteFromCart(item)}>
-						Remove
-					</span>
+				<td>{price}</td>
+				<td>
+					<RemoveCartItem onClick={() => deleteFromCart(item)}>Remove</RemoveCartItem>
 				</td>
-			</tr>
+			</CheckoutItemContainer>
 		</Fragment>
 	);
 };

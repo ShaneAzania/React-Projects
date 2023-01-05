@@ -1,4 +1,4 @@
-import "./productCard.scss";
+import { Img, ProductCardContainer, ProductCardFooter, ProductName } from "./productCard.styles.jsx";
 
 import { useContext } from "react";
 import { CartContext } from "../../contexts/cart.context";
@@ -12,16 +12,16 @@ function ProductCard({ product }) {
 	};
 
 	return (
-		<div className="product-card-container">
-			<img src={imageUrl} alt={`${name}`} />
-			<div className="footer">
-				<span className="name">{name}</span>
-				<span className="price">${price}</span>
-			</div>
+		<ProductCardContainer>
+			<Img src={imageUrl} alt={`${name}`} />
+			<ProductCardFooter>
+				<span>{name}</span>
+				<span>${price}</span>
+			</ProductCardFooter>
 			<button className="btn btn-outline-light rounded-0 text-center " onClick={addToCartHandler}>
 				Add to card
 			</button>
-		</div>
+		</ProductCardContainer>
 	);
 }
 

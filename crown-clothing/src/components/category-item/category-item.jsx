@@ -1,3 +1,5 @@
+import { CategoryContainer, BackgroundImage, CategoryBodyContainer } from "./category-item.styles";
+
 import { useNavigate } from "react-router-dom";
 
 const CategoryItem = ({ id, title, imageUrl }) => {
@@ -6,13 +8,13 @@ const CategoryItem = ({ id, title, imageUrl }) => {
 			navigate("/shop/" + title.toLowerCase());
 		};
 	return (
-		<div key={id} className="category-container">
-			<div className="background-image" style={{ backgroundImage: `url(${imageUrl})` }}></div>
-			<div className="category-body-container" onClick={handleCategoryClick}>
+		<CategoryContainer>
+			<BackgroundImage imageUrl={imageUrl}></BackgroundImage>
+			<CategoryBodyContainer onClick={handleCategoryClick}>
 				<h2>{title.toUpperCase()}</h2>
 				<p>Shop Now</p>
-			</div>
-		</div>
+			</CategoryBodyContainer>
+		</CategoryContainer>
 	);
 };
 

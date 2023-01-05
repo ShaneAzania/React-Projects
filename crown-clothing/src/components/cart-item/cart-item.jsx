@@ -1,4 +1,11 @@
-import "./cart-item.scss";
+import {
+	CartItemContainer,
+	CartItemImage,
+	CartItemsDetails,
+	CartItemName,
+	IncreaseDecreaseCartItem,
+	RemoveCartItem,
+} from "./cart-item.styles";
 
 import { useContext } from "react";
 import { CartContext } from "../../contexts/cart.context";
@@ -7,27 +14,23 @@ const CartItem = ({ onClick, children, cartItem }) => {
 	const { id, name, imageUrl, price, quantity } = cartItem,
 		{ addItemToCart, subtractItemFromCart, deleteFromCart } = useContext(CartContext);
 	return (
-		<div id={"cart-item-" + id} className="cart-item-container" onClick={onClick}>
-			<div className="cart-item-image" style={{ backgroundImage: `url(${imageUrl})` }}></div>
-			<div className="cart-items-details">
-				<span className="cart-item-name">{name}</span>
+		<CartItemContainer onClick={onClick}>
+			<CartItemImage style={{ backgroundImage: `url(${imageUrl})` }}></CartItemImage>
+			<CartItemsDetails>
+				<CartItemName>{name}</CartItemName>
 				<div className="cart-item-quantity-and-price-container">
 					<span className="cart-item-price">${price}</span>
 				</div>
 				<div className="changeQuantity">
-					<span className="increase-decrease-cartItem" onClick={() => subtractItemFromCart(cartItem)}>
+					<IncreaseDecreaseCartItem onClick={() => subtractItemFromCart(cartItem)}>
 						{"< "}
-					</span>
+					</IncreaseDecreaseCartItem>
 					<span className="cart-item-quantity">{quantity}</span>
-					<span className="increase-decrease-cartItem" onClick={() => addItemToCart(cartItem)}>
-						{" >"}
-					</span>
+					<IncreaseDecreaseCartItem onClick={() => addItemToCart(cartItem)}>{" >"}</IncreaseDecreaseCartItem>
 				</div>
-				<span className="removeCartItem" onClick={() => deleteFromCart(cartItem)}>
-					Remove
-				</span>
-			</div>
-		</div>
+				<RemoveCartItem onClick={() => deleteFromCart(cartItem)}>Remove</RemoveCartItem>
+			</CartItemsDetails>
+		</CartItemContainer>
 	);
 };
 

@@ -1,4 +1,4 @@
-import "./nav.scss";
+import { LogoContainer, Navigation, NavLinks, NavLinksContainer } from "./nav.styles.jsx";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 import { Link, Outlet } from "react-router-dom";
 import { Fragment } from "react";
@@ -41,41 +41,41 @@ function Nav({ links }) {
 
 	return (
 		<Fragment>
-			<div className="navigation">
-				<Link className="logo-container" to="/">
+			<Navigation>
+				<LogoContainer to="/">
 					<Logo className="logo" />
-				</Link>
-				<div className="nav-links-container">
+				</LogoContainer>
+				<NavLinksContainer>
 					{links.map(({ text, to }) => {
 						if (!currenntUser && text !== "Sign-Out") {
 							return (
-								<Link key={to} className="nav-link" to={to}>
+								<NavLinks key={to} to={to}>
 									{text}
-								</Link>
+								</NavLinks>
 							);
 						} else if (currenntUser && text !== "Sign-In") {
 							if (text === "Sign-Out") {
 								return (
-									<Link key={to} className="nav-link" to={to} onClick={handleSignOutClick}>
+									<NavLinks key={to} to={to} onClick={handleSignOutClick}>
 										{text}
-									</Link>
+									</NavLinks>
 								);
 							} else {
 								return (
-									<Link key={to} className="nav-link" to={to}>
+									<NavLinks key={to} to={to}>
 										{text}
-									</Link>
+									</NavLinks>
 								);
 							}
 						} else return null;
 					})}
-					<Link key="userDisplayName" className="nav-link" to="#">
+					<NavLinks key="userDisplayName" to="#">
 						{userDisplayName}
-					</Link>
+					</NavLinks>
 					<CartIcon onClick={handleCartIconClick} />
 					{isCartOpen ? <CartDropdown /> : null}
-				</div>
-			</div>
+				</NavLinksContainer>
+			</Navigation>
 			<Outlet />
 		</Fragment>
 	);
