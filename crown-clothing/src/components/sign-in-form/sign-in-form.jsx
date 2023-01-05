@@ -1,5 +1,7 @@
 import "./sign-in-form.scss";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { logGoogleUsersWithPopUp, signInUsingEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input";
 
@@ -14,6 +16,7 @@ export default function SignInForm({ className }) {
 	const { email, password } = formFields;
 
 	const resetFormFields = () => setFormFields(defaultFormFields);
+	const navigate = useNavigate();
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -26,10 +29,14 @@ export default function SignInForm({ className }) {
 		// console.log("sign-in: handleSubmit: userAuth:", userAuth);
 		if (userAuth) {
 			resetFormFields();
+			navigate("/");
 		}
 	};
 
-	const handleGoogleSignIn = async () => await logGoogleUsersWithPopUp();
+	const handleGoogleSignIn = async () => {
+		await logGoogleUsersWithPopUp();
+		navigate("/");
+	};
 
 	return (
 		<div className={className}>

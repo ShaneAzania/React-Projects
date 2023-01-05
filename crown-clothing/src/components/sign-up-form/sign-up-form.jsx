@@ -1,6 +1,7 @@
 import "./sign-up-form.scss";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { createAuthUserWithEmailAndPassword, logGoogleUsersWithPopUp } from "../../utils/firebase/firebase.utils";
 
@@ -17,6 +18,8 @@ export default function SignUpForm({ className }) {
 	const { displayName, email, password, confirmPassword } = formFields;
 
 	const resetFormFields = () => setFormFields(defaultFormFields);
+
+	const navigate = useNavigate();
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -58,10 +61,18 @@ export default function SignUpForm({ className }) {
 		const userAuth = await createAuthUserWithEmailAndPassword(email, password, displayName);
 		// console.log("sign-up:", userAuth);
 
-		if (userAuth) resetFormFields();
+		if (userAuth) {
+			resetFormFields();
+
+			navigate("/");
+		}
 	};
 
-	const handleGoogleSignIn = async () => await logGoogleUsersWithPopUp();
+	const handleGoogleSignIn = async () => {
+		await logGoogleUsersWithPopUp();
+
+		navigate("/");
+	};
 
 	return (
 		<div className={className}>
