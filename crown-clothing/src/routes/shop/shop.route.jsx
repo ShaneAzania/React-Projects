@@ -22,7 +22,6 @@ function Shop() {
 							<div key={category.title} className="row mb-5">
 								<h2 className="col-12 pb-3">
 									<Link
-										className="link-decorations-0 text-dark"
 										to={"/shop/" + category.title.toLowerCase()}
 									>
 										{category.title}
