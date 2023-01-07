@@ -43,6 +43,7 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider_Google
 // create Database object
 export const db = getFirestore();
 
+// COLLECTIONS
 //  creating collections
 export const addCollectionDocuments = async (collectionKey, objectsToAdd) => {
 	const collectionRef = collection(db, collectionKey),
